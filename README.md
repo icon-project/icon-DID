@@ -1,6 +1,6 @@
 
 
-<h1 align="center">Icon Distributed Identifier </h1>
+<h1 align="center">ICON Decentralized Identifier </h1>
 
 ## Introduction
 
