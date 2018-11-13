@@ -1,4 +1,4 @@
-# Icon Distributed Identifier
+# ICON Decentralized Identifier
 ICON[1,2,3] is a decentralized network that connects various independent communities to enable interoperability between them. ICON DID is a decentralized identifier devised to provide a way to uniquely identify a person, an organization, or a digital device across the communities connected to the ICON network. ICON DID method specification conforms to the DID and the DID Documents Spec[4]. This document describes how ICON blockchain manages the DIDs and the DID documents, and specifies a set of rules for how a DID is created, queried, updated, and revoked.   
 
 ## 1. ICON DID
@@ -24,9 +24,9 @@ ICON DID should be created by each entity, and the DID must be unique within the
 
 * network-id of the “mainnet” is defined as “0000”. Other values can be assigned to different networks in the future.
 * idstring should be defined by the first 20 bytes in the 32-byte transaction hash of the transaction that was submitted to register the DID on the blockchain.
-    * isstring = TX_HASH[0:19]
+    * isstring = TX_HASH\[0:19]
 * checksum is a 4-byte string used to prevent human typing errors. 
-    * checksum = SHA3-256(network-id | idstring)[0:3]
+    * checksum = SHA3-256(network-id | idstring)\[0:3]
 
 ## 2. DID Document
 
@@ -35,25 +35,25 @@ ICON DID Document includes following objects.
 * publicKey : public key information that will be used to authenticate an entity.
 * authentication : a mechanism that proves the DID owner’s possession of the matching private key that corresponds to the public key registered in the DID Document.
 
-#### example
+#### Example
 ``` 
 {
       "@context": "https://w3id.org/did/v1",
-      "id": "did:icon:ARvG21FG1PskzWiaFhWAFg25IH",
+      "id": "did:icon:A25346D6F6C646F75333AC6340",
       "created": "2018-10-01T12:00:00Z",
       "updated": "2018-11-01T10:00:00Z",
       "publicKey": [
         {
-          "id": "did:icon:ARvG21FG1PskzWiaFhWAFg25IH#keys-1",
+          "id": "did:icon:A25346D6F6C646F75333AC6340#keys-1",
           "type": "Secp256k1VerificationKey2018",
-          "owner": "did:icon:ARvG21FG1PskzWiaFhWAFg25IH",
+          "owner": "did:icon:A25346D6F6C646F75333AC6340",
           "publicKeyHex": "02b9bd353320b2a4585238965b3fafa9fa556776d3302428a0ab6fb796c6f2301b"
         }
        ],
       "authentication": [
         {
           "type": "Secp256k1Authentication2018",
-          "publicKey":"did:icon:ARvG21FG1PskzWiaFhWAFg25IH#keys-1"
+          "publicKey":"did:icon:A25346D6F6C646F75333AC6340#keys-1"
         }
       ],
 }
