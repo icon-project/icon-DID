@@ -39,21 +39,21 @@ ICON DID Document includes following objects.
 ``` 
 {
       "@context": "https://w3id.org/did/v1",
-      "id": "did:icon:00000102030405060708090a11111111",
+      "id": "did:icon:ARvG21FG1PskzWiaFhWAFg25IH",
       "created": "2018-10-01T12:00:00Z",
       "updated": "2018-11-01T10:00:00Z",
       "publicKey": [
         {
-          "id": "did:icon:AGsL32ZMvAwxYRN9Sv4mrgu3DgBSvTm5vt#keys-1",
+          "id": "did:icon:ARvG21FG1PskzWiaFhWAFg25IH#keys-1",
           "type": "Secp256k1VerificationKey2018",
-          "owner": "did:icon:AGsL32ZMvAwxYRN9Sv4mrgu3DgBSvTm5vt",
-          "publicKeyHex": "02b97c30de767f084ce3080168ee2930 . . . 1450936b71"
+          "owner": "did:icon:ARvG21FG1PskzWiaFhWAFg25IH",
+          "publicKeyHex": "02b9bd353320b2a4585238965b3fafa9fa556776d3302428a0ab6fb796c6f2301b"
         }
        ],
       "authentication": [
         {
           "type": "Secp256k1Authentication2018",
-          "publicKey":"did:icon:AGsL32ZMvAwxYRN9Sv4mrgu3DgBSvTm5vt#keys-1"
+          "publicKey":"did:icon:ARvG21FG1PskzWiaFhWAFg25IH#keys-1"
         }
       ],
 }
