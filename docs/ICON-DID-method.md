@@ -24,7 +24,7 @@ ICON DID should be created by each entity, and the DID must be unique within the
 
 * network-id of the “mainnet” is defined as “0000”. Other values can be assigned to different networks in the future.
 * idstring should be defined by the first 20 bytes in the 32-byte transaction hash of the transaction that was submitted to register the DID on the blockchain.
-    * isstring = TX_HASH\[0:19]
+    * idstring = TX_HASH\[0:19]
 * checksum is a 4-byte string used to prevent human typing errors. 
     * checksum = SHA3-256(network-id | idstring)\[0:3]
 
@@ -38,24 +38,24 @@ ICON DID Document includes following objects.
 #### Example
 ``` 
 {
-      "@context": "https://w3id.org/did/v1",
-      "id": "did:icon:A25346D6F6C646F75333AC6340",
-      "created": "2018-10-01T12:00:00Z",
-      "updated": "2018-11-01T10:00:00Z",
-      "publicKey": [
+    "@context": "https://w3id.org/did/v1",
+    "id": "did:icon:0000c76647ac2855a7ed4a8305ae7eb9d6872f9525d92254fcb9",
+    "created": "2018-10-01T12:00:00Z",
+    "updated": "2018-11-01T10:00:00Z",
+    "publicKey": [
         {
-          "id": "did:icon:A25346D6F6C646F75333AC6340#keys-1",
-          "type": "Secp256k1VerificationKey2018",
-          "owner": "did:icon:A25346D6F6C646F75333AC6340",
-          "publicKeyHex": "02b9bd353320b2a4585238965b3fafa9fa556776d3302428a0ab6fb796c6f2301b"
+            "id": "keys-1",
+            "type": "Secp256k1VerificationKey2018",
+            "owner": "did:icon:0000c76647ac2855a7ed4a8305ae7eb9d6872f9525d92254fcb9",
+            "publicKeyHex": "02b9bd353320b2a4585238965b3fafa9fa556776d3302428a0ab6fb796c6f2301b"
         }
-       ],
-      "authentication": [
+    ],
+    "authentication": [
         {
-          "type": "Secp256k1Authentication2018",
-          "publicKey":"did:icon:A25346D6F6C646F75333AC6340#keys-1"
+            "type": "Secp256k1Authentication2018",
+            "publicKey":"keys-1"
         }
-      ],
+    ]
 }
 ```
 
@@ -66,24 +66,30 @@ ICON DID is managed by a dedicated Smart Contract on the blockchain. The owner o
 Entity must submit a transaction to register a new DID Document to the ICON blockchain. The transaction must contain following elements. The requesting entity must prove its possession of the matching private key that corresponds to the public key in the document by providing a signature.  
 
 ``` 
-“data” : {
-               “method” : “create”
-               “params” : {
-                       “header” : {
-                             “alg” : “auth_algorithm”
-                       },
-                       “payload” : {
-                             “publicKey” : [{
-                                   “type”: public key type,
-                                   “publicKeyHex” : hex encoded public key
-                             }],
-                             “authentication” : [{
-                                   “type” : authentication type,
-                                   “publicKey” : publicKey object
-                             ]}
-                       },
-                       “signature” : signature
-               }
+{
+    "method" : "create",
+    "params" : {
+        "header" : {
+            "typ" : "JWT",
+            "alg" : <Algorithm>
+        },
+        "payload" : {
+            "publicKey" : [
+                {
+                    "id" : <Key-Identifier>,
+                    "type" : <PublicKey-Type>,
+                    "publicKeyHex" : <Encoded-PublicKey>
+                }
+            ],
+            "authentication" : [
+                {
+                    "type" : <Authentication-Type>,
+                    "publicKey" : <PublicKey-Object>
+                }
+            ]
+        },
+        "signature" : <Encoded-Signature>
+    }
 }
 ```
 
@@ -91,11 +97,11 @@ Entity must submit a transaction to register a new DID Document to the ICON bloc
 Anyone can look up the DID Document registered in the ICON blockchain. The DID Document query must contain following objects. 
 
 ```
-“data” : {
-               “method” : “get_did”,
-               “params” : {
-                     “id” : icon-did to query
-               }
+{
+    "method" : "get_did_document",
+    "params" : {
+        "id" : <DID to Query>
+    }
 }
 ```
 
@@ -103,29 +109,36 @@ Anyone can look up the DID Document registered in the ICON blockchain. The DID D
 To update the DID Document registered in the ICON blockchain, entity must send a transaction. DID document will be replaced by the new transaction. Only the DID owner is permitted to update, and the requesting entity must prove its identity using the authentication mechanism defined in the DID Document.  
 
 ```
-“data” : {
-               “method” : “update”
-               “params” : {
-                       “header” : {
-                             “alg” : “auth_algorithm”
-                       },
-                       “payload” : {
-                             “id” : icon-did to update
-                             “publicKey” : [{
-                                   “type”: public key type,
-                                   “publicKeyHex” : hex encoded public key
-                             }],
-                             “publicKey” : [{
-                                   “type”: public key type,
-                                   “publicKeyHex” : hex encoded public key
-                             }],
-                             “authentication” : [{
-                                   “type” : authentication type,
-                                   “publicKey” : publicKey object
-                             ]}
-                       },
-                       “signature” : signature
-               }
+{
+    "method" : "update",
+    "params" : {
+        "header" : {
+            "typ" : "JWT",
+            "alg" : <Algorithm>
+        },
+        "payload" : {
+            "id" : <DID to update>,
+            "publicKey" : [
+                {
+                    "id" : <Key-Identifier>,
+                    "type" : <PublicKey-Type>,
+                    "publicKeyHex : <Encoded-PublicKey>
+                },
+                {
+                    "id" : <Key-Identifier>,
+                    "type" : <PublicKey-Type>,
+                    "publicKeyHex" : <Encoded-PublicKey>
+                }
+            ],
+            "authentication" : [
+                {
+                    "type" : <Authentication-Type>,
+                    "publicKey" : <PublicKey-Object>
+                }
+            ]
+        },
+        "signature" : <Encoded-Signature>
+    }
 }
 ```
 
@@ -133,17 +146,19 @@ To update the DID Document registered in the ICON blockchain, entity must send a
 To delete (revoke) a registered DID, entity should send the following transaction. The requesting entity must prove its ownership of the DID using the authentication mechanism defined in the DID document.
 
 ```
-“data” : {
-               “method” : “delete”
-               “params” : {
-                       “header” : {
-                             “alg” : “auth_algorithm”
-                       },
-                       “payload” : {
-                             “id” : icon-did to delete
-                       },
-                       “signature” : signature
-               }
+{
+    "method" : "delete"
+    "params" : {
+        "header" : {
+            "typ" : "JWT",
+            "alg" : <Algorithm>
+        },
+        "payload" : {
+            "id" : <DID to delete>,
+            "publicKey" : <PublicKey-Object to delete>
+        },
+        "signature" : <Encoded-Signature>
+    }
 }
 ```
 
