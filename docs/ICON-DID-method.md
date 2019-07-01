@@ -12,17 +12,23 @@ A DID that uses this method **MUST** begin with the following prefix: `did:icon`
 The decentralized identifiers(DID) on ICON blockchain is of the following format:
 
 ```
-icon-did = “did:icon:” + specific-idstring
-specific-idstring = network-id +  idstring + checksum
-network-id = 4*HEXDIG
-idstring = 40*HEXDIG
-checksum = 8*HEXDIG
+icon-did = “did:icon:” + network-id + “:” + specific-idstring
+network-id = (2*i)*HEXDIG, (i>0)
+specific-idstring = idstring + checksum
+  idstring = 40*HEXDIG
+  checksum = 8*HEXDIG
 ```
 
-### 1.3 Specific-idstring Generation Method
-ICON DID should be created by each entity, and the DID must be unique within the ICON network. Specific-idstring is a hex encoded string and composed of the concatenation of the network-id, idstring and checksum. 
+#### 1.2.1 Network-ID
+The network-id is a identifier of network where the DID is stored.
 
-* network-id of the “mainnet” is defined as “0000”. Other values can be assigned to different networks in the future.
+* The network-id must be represented by an even number of hex-digits (at least 2 hex-digits) and configured according to the policies of the ICON network.
+* Network-id of the ICON “mainnet” is defined as “01”.
+* Other values can be assigned to different networks in the future.
+
+#### 1.2.2 Specific-idstring Generation Method
+ICON DID should be created by each entity, and the DID must be unique within the ICON network. Specific-idstring is a hex encoded string and composed of the concatenation of idstring and checksum.
+
 * idstring should be defined by the first 20 bytes in the 32-byte transaction hash of the transaction that was submitted to register the DID on the blockchain.
     * idstring = TX_HASH\[0:19]
 * checksum is a 4-byte string used to prevent human typing errors. 
@@ -39,14 +45,14 @@ ICON DID Document includes following objects.
 ``` 
 {
     "@context": "https://w3id.org/did/v1",
-    "id": "did:icon:0000c76647ac2855a7ed4a8305ae7eb9d6872f9525d92254fcb9",
+    "id": "did:icon:01:c76647ac2855a7ed4a8305ae7eb9d6872f9525d92254fcb9",
     "created": "2018-10-01T12:00:00Z",
     "updated": "2018-11-01T10:00:00Z",
     "publicKey": [
         {
             "id": "keys-1",
             "type": "Secp256k1VerificationKey2018",
-            "owner": "did:icon:0000c76647ac2855a7ed4a8305ae7eb9d6872f9525d92254fcb9",
+            "owner": "did:icon:01:c76647ac2855a7ed4a8305ae7eb9d6872f9525d92254fcb9",
             "publicKeyHex": "02b9bd353320b2a4585238965b3fafa9fa556776d3302428a0ab6fb796c6f2301b"
         }
     ],
